@@ -1,0 +1,84 @@
+#container {
+    width: 20%;
+    height: 400px;
+    margin: auto;
+    border: solid #01497C;
+    border-radius: 10px;
+}
+
+#container-title {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 22px;
+    color: white;
+    background-color: #01497C;
+    text-align: center;
+    height: 15%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;       
+    justify-content: center;    
+}
+
+#container-title h1 {
+    margin: 0;          
+    padding: 0;         
+    font-size: 1.5em;   
+}
+
+.row {
+    border: solid #01497C 2px;
+    border-radius: 5px;
+    margin: 20px;
+    margin-top: 30px;
+    height: 40px;                      
+    display: flex;
+    align-items: center;                          
+}
+
+.row i {
+    color: white;                      
+    background-color: #01497C;        
+    font-size: 20px;                    
+    padding: 10px;                    
+    border-radius: 0px;                
+    margin-right: 0px;                         
+}
+
+.row input {
+    width: 100%;                        
+    border: none;                       
+    outline: none;                      
+    font-size: 14px;                    
+    padding: 5px;                
+    border-radius: 5px;    
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 20px;             
+}
+
+#submit-button {
+    width: 90%;                         
+    background-color: #01497C;          
+    color: white;                      
+    padding: 10px;                       
+    font-size: 18px;                     
+    border: none;                        
+    border-radius: 5px;                  
+    cursor: pointer;                    
+    margin: 20px;
+    margin-top: 50px;            
+    display: block;     
+}
+
+h3 {
+    text-align: center;
+}
+
+#toggle-password {
+    color: grey;                      
+    background-color: white;        
+    font-size: 20px;                    
+    padding: 10px;                    
+    border-radius: 0px;                
+    margin-right: 0px;        
+}
