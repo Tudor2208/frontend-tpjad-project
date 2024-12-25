@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import SidePanel from './SidePanel';
+import '../css/HomePage.css';
 
 function HomePage() {
     
     return (
         <>
-            <h1>Welcome!</h1>
+            <SidePanel/>
         </>
     )
 }

@@ -1,0 +1,13 @@
+/* Ensure no margin or padding on body */
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    font-family: Arial, sans-serif;
+    height: 100vh; /* Ensure the body fills the full height of the page */
+  }
+  
+  html {
+    height: 100%; /* Set html to full height */
+  }
+  
