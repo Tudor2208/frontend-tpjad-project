@@ -1,0 +1,129 @@
+/* ChatComponent Styles */
+.chat-component {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 400px;
+  height: 100vh;
+  background-color: #343a40; /* Dark background color */
+  box-shadow: -4px 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Ensure content stays inside the container */
+}
+
+.chat-component .close-btn {
+  background-color: transparent;
+  color: #ff4d4f; /* Red color for close button */
+  border: none;
+  font-size: 30px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.chat-component h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #ffffff; /* White color for the title */
+}
+
+.chat-component .chat-box {
+  flex-grow: 1; /* Take up the available space */
+  overflow-y: auto; /* Make messages scrollable */
+  padding: 10px;
+  background-color: #495057; /* Darker background for chat box */
+  border-radius: 8px;
+  max-height: calc(100vh - 140px); /* Adjust max height based on available space (header, close button, and input) */
+  margin-bottom: 20px; /* Ensure the chat box has spacing from the input area */
+}
+
+.chat-component .message {
+  padding: 12px;
+  margin-bottom: 12px;
+  background-color: #6c757d; /* Light gray background for messages */
+  border-radius: 8px;
+  color: #ffffff;
+  position: relative;
+  max-width: 70%; /* Limit the width of each message */
+  word-wrap: break-word;
+  line-height: 1.5;
+}
+
+.chat-component .message.sent {
+  background-color: #2c423a; /* Darker background for sent messages */
+  text-align: right;
+  margin-left: auto; /* Align sent messages to the right */
+}
+
+.chat-component .message.received {
+  background-color: #4a637d; /* Dark background for received messages */
+  text-align: left;
+  margin-right: auto; /* Align received messages to the left */
+}
+
+.chat-component .message-time {
+  font-size: 10px;
+  color: #adb5bd;
+  position: left;
+  bottom: 1px;
+  right: 10px;
+}
+
+.chat-component .message-input {
+  display: flex;
+  gap: 10px;
+  margin-top: auto; /* Push input to the bottom */
+  padding-top: 10px;
+  padding-bottom: 50px; /* Reduced padding to bring it up */
+  border-top: 1px solid #495057; /* Optional: add a border for separation */
+  background-color: #343a40; /* Dark background to match the overall theme */
+  align-items: center; /* Center the input and button vertically */
+}
+
+.chat-component .message-input input {
+  padding: 10px;
+  border: 1px solid #495057;
+  border-radius: 5px;
+  flex-grow: 1;
+  background-color: #495057;
+  color: #ffffff;
+}
+
+.chat-component .message-input button {
+  padding: 10px 15px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.chat-component .message-input button:hover {
+  background-color: #495057;
+}
+
+.chat-component .chat-box::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-component .chat-box::-webkit-scrollbar-thumb {
+  background-color: #6c757d;
+  border-radius: 8px;
+}
+
+.chat-component .chat-box::-webkit-scrollbar-thumb:hover {
+  background-color: #495057;
+}
+
+.chat-component .chat-box {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 10px;
+  background-color: #495057;
+  border-radius: 8px;
+  max-height: calc(100vh - 140px);
+  margin-bottom: 20px;
+}

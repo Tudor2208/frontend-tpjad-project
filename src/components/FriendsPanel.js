@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import "../css/RightSidePanel.css"; // Import the CSS for the RightSidePanel
+import "../css/FriendsPanel.css"; // Import the CSS for the RightSidePanel
 import { toast } from 'sonner';
 
-const RightSidePanel = ({ isVisible, closePanel }) => {
+const FriendsPanel = ({ isVisible, closePanel }) => {
   // Example friend list (You can replace this with actual data)
   const friends = [
     "Friend 1",
@@ -76,4 +76,4 @@ const RightSidePanel = ({ isVisible, closePanel }) => {
   );
 };
 
-export default RightSidePanel;
+export default FriendsPanel;

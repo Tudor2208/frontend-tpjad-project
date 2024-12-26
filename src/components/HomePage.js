@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import SidePanel from './SidePanel';
+import LeftSidePanel from './LeftSidePanel';
 import '../css/HomePage.css';
 
 function HomePage() {
     
     return (
         <>
-            <SidePanel/>
+            <LeftSidePanel/>
         </>
     )
 }
