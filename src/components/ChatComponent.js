@@ -20,7 +20,7 @@ const ChatComponent = ({ conversation, closeChat, userId1, userId2 }) => {
 
       try {
         const response = await fetch(
-          `https://localhost:9443/api/v1/messages/conversation?userId1=${userId1}&userId2=${userId2}`,
+          `http://localhost:8081/api/v1/messages/conversation?userId1=${userId1}&userId2=${userId2}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -70,7 +70,7 @@ const ChatComponent = ({ conversation, closeChat, userId1, userId2 }) => {
 
       // Save the message on the server
       try {
-        const response = await fetch("https://localhost:9443/api/v1/messages", {
+        const response = await fetch("http://localhost:8081/api/v1/messages", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

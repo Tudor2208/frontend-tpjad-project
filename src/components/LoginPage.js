@@ -7,7 +7,7 @@ function LoginPage() {
     const navigate = useNavigate();
 
     const handleLogin = async (email, password) => {
-        const url = 'https://localhost:8443/api/v1/auth/authenticate';
+        const url = 'http://localhost:8080/api/v1/auth/authenticate';
 
         const requestBody = {
             email: email,

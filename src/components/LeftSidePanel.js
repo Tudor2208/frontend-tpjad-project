@@ -30,7 +30,7 @@ const LeftSidePanel = () => {
   const fetchConversations = async (token, userId) => {
     try {
       const response = await fetch(
-        `https://localhost:9443/api/v1/messages/conversations/${userId}`,
+        `http://localhost:8081/api/v1/messages/conversations/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
