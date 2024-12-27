@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import "../css/FriendsPanel.css"; // Import the CSS for the RightSidePanel
+import "../css/FriendsPanel.css";
 import { toast } from 'sonner';
 
 const FriendsPanel = ({ isVisible, closePanel }) => {
-  // Example friend list (You can replace this with actual data)
   const friends = [
     "Friend 1",
     "Friend 2",
@@ -17,15 +16,12 @@ const FriendsPanel = ({ isVisible, closePanel }) => {
 
   const [inputUserId, setInputUserId] = useState("");
   
-  // State to manage the search query
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Function to handle the search input change
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
 
-  // Filter the friends based on the search query
   const filteredFriends = friends.filter((friend) =>
     friend.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -56,12 +52,11 @@ const FriendsPanel = ({ isVisible, closePanel }) => {
             type="text"
             placeholder="Search..."
             value={searchQuery}
-            onChange={handleSearchChange} // Update the search query state
+            onChange={handleSearchChange}
           />
         </div>
       </div>
       <div className="friends-list">
-        {/* Render the filtered friends list */}
         {filteredFriends.length > 0 ? (
           filteredFriends.map((friend, index) => (
             <div key={index} className="friend-item">

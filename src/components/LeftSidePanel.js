@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import FriendsPanel from "./FriendsPanel"; // Ensure you have this component
+import FriendsPanel from "./FriendsPanel"; 
 import ChatComponent from "./ChatComponent";
 import "../css/LeftSidePanel.css";
 
@@ -8,13 +8,13 @@ const LeftSidePanel = () => {
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [userName, setUserName] = useState("");
   const [conversations, setConversations] = useState([]);
-  const [userId, setUserId] = useState(""); // Store userId
+  const [userId, setUserId] = useState(""); 
   
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (storedUser && storedUser.firstName) {
       setUserName(storedUser.firstName);
-      setUserId(storedUser.id); // Get the userId from localStorage
+      setUserId(storedUser.id); 
     } else {
       setUserName("Guest");
     }
@@ -46,17 +46,17 @@ const LeftSidePanel = () => {
 
   const handleConversationClick = (conversation) => {
     if (conversation === selectedConversation) {
-      setSelectedConversation(null); // Close the chat if the same conversation is clicked
+      setSelectedConversation(null); 
     } else {
-      setSelectedConversation(conversation); // Open the chat for the clicked conversation
+      setSelectedConversation(conversation);
     }
-    setShowFriendsPanel(false); // Close the friends panel when a conversation is clicked
+    setShowFriendsPanel(false); 
   };
 
   const formatTimestamp = (timestamp) => {
     const date = new Date(timestamp);
     const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
+    const month = String(date.getMonth() + 1).padStart(2, "0"); 
     const year = date.getFullYear();
     const hours = String(date.getHours()).padStart(2, "0");
     const minutes = String(date.getMinutes()).padStart(2, "0");
@@ -77,7 +77,6 @@ const LeftSidePanel = () => {
         <i className="fa-solid fa-users"></i> Groups
       </button>
 
-      {/* Conditionally render the FriendsPanel */}
       <FriendsPanel isVisible={showFriendsPanel} closePanel={() => setShowFriendsPanel(false)} />
 
       <div className="conversations">
