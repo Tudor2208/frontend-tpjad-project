@@ -127,3 +127,9 @@
   max-height: calc(100vh - 140px);
   margin-bottom: 20px;
 }
+
+.edited-text {
+  font-style: italic;
+  font-size: 12px;
+  color: #adb5bd; 
+}
