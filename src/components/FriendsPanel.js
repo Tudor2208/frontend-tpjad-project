@@ -202,6 +202,44 @@ const FriendsPanel = ({ isVisible, closePanel, onFriendClick }) => {
     }
   };
 
+  // Remove Friend (delete friendship)
+  // Remove Friend (delete friendship)
+const removeFriend = async (friendId) => {
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const userId = storedUser?.id;
+  const token = storedUser?.token;
+
+  if (!userId || !token) {
+    toast.error("User not logged in.");
+    return;
+  }
+
+  // Confirm before removing the friend
+  const confirmation = window.confirm("Are you sure you want to remove this friend?");
+  if (!confirmation) {
+    return; // If the user cancels, we stop the operation
+  }
+
+  try {
+    const response = await fetch(`http://localhost:8080/api/v1/friendships/${userId}/${friendId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.ok) {
+      toast.success("Friend removed!");
+      setFriends(friends.filter((friend) => friend.id !== friendId)); // Remove from friends list
+    } else {
+      toast.error("Failed to remove friend.");
+    }
+  } catch (error) {
+    console.error("Error removing friend:", error);
+    toast.error("An error occurred while removing the friend.");
+  }
+};
+
   return (
     <div className={`right-side-panel ${isVisible ? "visible" : ""}`}>
       <button className="close-btn" onClick={closePanel}>
@@ -245,7 +283,7 @@ const FriendsPanel = ({ isVisible, closePanel, onFriendClick }) => {
                 className="deny-btn"
                 onClick={() => denyFriendRequest(request.id)}
               >
-                <i className="fas fa-times"></i> Deny
+                Deny
               </button>
             </div>
           ))
@@ -264,6 +302,12 @@ const FriendsPanel = ({ isVisible, closePanel, onFriendClick }) => {
               onClick={() => onFriendClick(friend)} // Pass selected friend to parent
             >
               {friend.firstName} {friend.lastName} (#{friend.id})
+              <button className="remove-btn" onClick={() => removeFriend(friend.id)}>
+                <i className="fas fa-times"></i> 
+              </button>
+              <button className="chat-btn" onClick={() => onFriendClick(friend)}>
+                <i className="fas fa-comment"></i>
+              </button>
             </div>
           ))
         ) : (

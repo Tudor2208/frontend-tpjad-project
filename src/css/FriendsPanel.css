@@ -121,8 +121,10 @@
   transition: background-color 0.3s, transform 0.2s;
   font-size: 14px;
   color: white; /* White text */
+  justify-content: space-between; /* Align items to the left and right */
 }
 
+/* Hover effect for friends item */
 .friend-item:hover {
   background-color: #212529; /* Darker hover effect */
   transform: scale(1.02); /* Slight zoom effect */
@@ -151,6 +153,40 @@
   background: #495057;
 }
 
+/* Add specific styles for Remove and Chat buttons */
+.remove-btn,
+.chat-btn {
+  background-color: transparent; /* No background for the button */
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+}
+
+.remove-btn {
+  color: #f44336; /* Red color for remove button */
+  margin-left: 10px;
+}
+
+.chat-btn {
+  color: #007bff; /* Blue color for chat button */
+  margin-left: 10px;
+}
+
+/* Remove hover effects for both buttons */
+.remove-btn:hover,
+.chat-btn:hover {
+  color: inherit; /* No color change on hover */
+}
+
+.remove-btn i,
+.chat-btn i {
+  font-size: 20px;
+}
+
+/* Accept and Deny buttons for Friend Requests */
 .accept-btn {
   background-color: #4caf50;
   color: white;

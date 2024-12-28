@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import 'font-awesome/css/font-awesome.min.css';
-
 import "../css/ChatComponent.css";
 
 const ChatComponent = ({ conversation, closeChat, userId1, userId2 }) => {
@@ -8,6 +7,7 @@ const ChatComponent = ({ conversation, closeChat, userId1, userId2 }) => {
   const [newMessage, setNewMessage] = useState("");
   const [editingMessageId, setEditingMessageId] = useState(null);
   const [editingText, setEditingText] = useState(""); // Initialize as empty string to avoid undefined issues
+  const [isFriend, setIsFriend] = useState(false); // Track if the user is friends with the other person
   const chatBoxRef = useRef(null);
 
   // Fetch messages from the API
@@ -44,7 +44,37 @@ const ChatComponent = ({ conversation, closeChat, userId1, userId2 }) => {
       }
     };
 
+    const checkFriendStatus = async () => {
+      const storedUser = JSON.parse(localStorage.getItem("user"));
+      const token = storedUser?.token;
+      const loggedInUserId = storedUser?.id;
+
+      if (!token || !loggedInUserId) {
+        console.error("Token or User ID not found.");
+        return;
+      }
+
+      try {
+        // Fetch the friends list for the logged-in user to check if they are friends
+        const response = await fetch(
+          `http://localhost:8080/api/v1/friendships?userId=${loggedInUserId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const friendsData = await response.json();
+        // Check if the other user is in the friends list
+        const isFriend = friendsData.some(friend => friend.id === userId1 || friend.id === userId2);
+        setIsFriend(isFriend); // Update the state based on whether they are friends
+      } catch (error) {
+        console.error("Error checking friendship status:", error);
+      }
+    };
+
     fetchMessages();
+    checkFriendStatus();
   }, [userId1, userId2]);
 
   // Scroll to the bottom when new messages arrive
@@ -220,18 +250,22 @@ const ChatComponent = ({ conversation, closeChat, userId1, userId2 }) => {
         )}
       </div>
 
-      <div className="message-input">
-        <input
-          type="text"
-          value={newMessage}
-          onChange={handleMessageChange}
-          onKeyDown={handleKeyPress}
-          placeholder="Type a message"
-        />
-        <button onClick={sendMessage}>
-          <i className="fa fa-paper-plane"></i>
-        </button>
-      </div>
+      {isFriend ? (
+        <div className="message-input">
+          <input
+            type="text"
+            value={newMessage}
+            onChange={handleMessageChange}
+            onKeyDown={handleKeyPress}
+            placeholder="Type a message"
+          />
+          <button onClick={sendMessage}>
+            <i className="fa fa-paper-plane"></i>
+          </button>
+        </div>
+      ) : (
+        <div className="no-messages">You are not friends with this person, so you can't send messages.</div>
+      )}
     </div>
   );
 };
