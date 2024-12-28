@@ -64,6 +64,11 @@
   flex-grow: 1; /* Input field grows to take up space */
 }
 
+.add-friend input::placeholder {
+  color: #adb5bd; /* Lighter grey color for placeholder text */
+  opacity: 1; /* Ensure placeholder is fully opaque */
+}
+
 .add-friend button {
   padding: 10px 15px;
   background-color: #4b39d0;
@@ -88,6 +93,11 @@
   width: 100%;
   background-color: #6c757d;
   color: white;
+}
+
+.search-friend input::placeholder {
+  color: #adb5bd; /* Lighter grey color for placeholder text */
+  opacity: 1; /* Ensure placeholder is fully opaque */
 }
 
 /* Friends List */
@@ -139,4 +149,45 @@
 
 .friends-list::-webkit-scrollbar-thumb:hover {
   background: #495057;
+}
+
+.accept-btn {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  margin-left: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.deny-btn {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  margin-left: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.accept-btn:hover, .deny-btn:hover {
+  opacity: 0.8;
+}
+
+.pending-request-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.pending-requests-list {
+  margin-bottom: 20px;
 }

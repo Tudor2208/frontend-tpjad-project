@@ -133,7 +133,7 @@ const ChatComponent = ({ conversation, closeChat, userId1, userId2 }) => {
     if (editingText.trim()) {
       try {
         const response = await fetch(`http://localhost:8081/api/v1/messages/${messageId}`, {
-          method: "PUT", // Changed to PATCH method for editing
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,

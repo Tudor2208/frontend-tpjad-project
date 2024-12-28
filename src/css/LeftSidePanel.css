@@ -127,3 +127,24 @@
 .conversations::-webkit-scrollbar-thumb:hover {
   background: #495057;
 }
+
+.logout-btn {
+  background-color: transparent; /* Make the background transparent */
+  border: none;
+  color: #f44336; /* Red color for logout */
+  font-size: 20px; /* Increase font size to make the icon larger */
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.logout-btn:hover {
+  color: #d32f2f; /* Darker red when hovered */
+}
+
+.logout-btn:focus {
+  outline: none; /* Remove focus outline */
+}
+
+.user-id {
+  color:#12b64b
+}

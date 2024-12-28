@@ -64,10 +64,21 @@ const LeftSidePanel = () => {
     return `${day}-${month}-${year}, ${hours}:${minutes}`;
   };
 
+  const handleLogout = () => {
+    // Clear the user data from localStorage and redirect to login page
+    localStorage.removeItem("user");
+    window.location.href = "/login"; // Or route to your login page if using React Router
+  };
+
   return (
     <div className="side-panel">
       <div className="welcome-message">
         Hello, {userName}!
+        <button className="logout-btn" onClick={handleLogout}>
+          <i className="fa-solid fa-right-from-bracket"></i> {/* Font Awesome Logout Icon */}
+        </button>
+        <br/>
+        <div className="user-id">(#{userId})</div>
       </div>
 
       <button className="side-panel-btn" onClick={() => setShowFriendsPanel(!showFriendsPanel)}>
@@ -80,6 +91,7 @@ const LeftSidePanel = () => {
       <FriendsPanel isVisible={showFriendsPanel} closePanel={() => setShowFriendsPanel(false)} />
 
       <div className="conversations">
+        <h2>Chats</h2>
         {conversations.map((conversation, index) => (
           <div
             key={index}
