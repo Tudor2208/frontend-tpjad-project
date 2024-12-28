@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../css/FriendsPanel.css";
 import { toast } from "sonner"; // Assuming you're using toast for notifications
 
-const FriendsPanel = ({ isVisible, closePanel }) => {
+const FriendsPanel = ({ isVisible, closePanel, onFriendClick }) => {
   const [friends, setFriends] = useState([]);
   const [pendingRequests, setPendingRequests] = useState([]); // New state for pending requests
   const [inputUserId, setInputUserId] = useState("");
@@ -207,7 +207,7 @@ const FriendsPanel = ({ isVisible, closePanel }) => {
       <button className="close-btn" onClick={closePanel}>
         &times;
       </button>
-      
+
       <div className="friend-actions">
         <div className="add-friend">
           <input
@@ -258,7 +258,11 @@ const FriendsPanel = ({ isVisible, closePanel }) => {
       <div className="friends-list">
         {filteredFriends.length > 0 ? (
           filteredFriends.map((friend, index) => (
-            <div key={index} className="friend-item">
+            <div
+              key={index}
+              className="friend-item"
+              onClick={() => onFriendClick(friend)} // Pass selected friend to parent
+            >
               {friend.firstName} {friend.lastName} (#{friend.id})
             </div>
           ))

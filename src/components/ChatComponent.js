@@ -7,7 +7,7 @@ const ChatComponent = ({ conversation, closeChat, userId1, userId2 }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [editingMessageId, setEditingMessageId] = useState(null);
-  const [editingText, setEditingText] = useState("");
+  const [editingText, setEditingText] = useState(""); // Initialize as empty string to avoid undefined issues
   const chatBoxRef = useRef(null);
 
   // Fetch messages from the API
@@ -62,7 +62,7 @@ const ChatComponent = ({ conversation, closeChat, userId1, userId2 }) => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     const loggedInUserId = storedUser?.id;
     if (newMessage.trim()) {
-      const timestamp = Date.now(); 
+      const timestamp = Date.now();
       const recipientId = userId1 === loggedInUserId ? userId2 : userId1;
 
       // Initially set 'edited' to false when sending a new message
@@ -70,7 +70,7 @@ const ChatComponent = ({ conversation, closeChat, userId1, userId2 }) => {
         ...messages,
         { senderId: loggedInUserId, text: newMessage, timestamp: timestamp, edited: false },
       ]);
-      setNewMessage(""); 
+      setNewMessage(""); // Reset the input field
 
       try {
         const response = await fetch("http://localhost:8081/api/v1/messages", {
@@ -147,7 +147,7 @@ const ChatComponent = ({ conversation, closeChat, userId1, userId2 }) => {
             msg.id === messageId ? { ...msg, text: editingText, edited: true } : msg
           ));
           setEditingMessageId(null);
-          setEditingText("");
+          setEditingText(""); // Reset editing text after successful edit
           console.log("Message edited successfully");
         } else {
           console.error("Error editing message:", response.statusText);
@@ -207,8 +207,12 @@ const ChatComponent = ({ conversation, closeChat, userId1, userId2 }) => {
               <div className="message-time">{formatTimestamp(msg.timestamp)}</div>
               {msg.senderId === JSON.parse(localStorage.getItem("user"))?.id && (
                 <div className="message-actions">
-                  <button onClick={() => { setEditingMessageId(msg.id); setEditingText(msg.text); }}><i className="fa fa-edit"></i></button>
-                  <button onClick={() => handleDeleteMessage(msg.id)}><i className="fa-solid fa-trash"></i></button>
+                  <button onClick={() => { setEditingMessageId(msg.id); setEditingText(msg.text || ""); }}>
+                    <i className="fa fa-edit"></i>
+                  </button>
+                  <button onClick={() => handleDeleteMessage(msg.id)}>
+                    <i className="fa-solid fa-trash"></i>
+                  </button>
                 </div>
               )}
             </div>
@@ -224,7 +228,9 @@ const ChatComponent = ({ conversation, closeChat, userId1, userId2 }) => {
           onKeyDown={handleKeyPress}
           placeholder="Type a message"
         />
-        <button onClick={sendMessage}><i className="fa fa-paper-plane"></i></button>
+        <button onClick={sendMessage}>
+          <i className="fa fa-paper-plane"></i>
+        </button>
       </div>
     </div>
   );

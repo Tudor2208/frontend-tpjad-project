@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import FriendsPanel from "./FriendsPanel"; 
+import FriendsPanel from "./FriendsPanel";
 import ChatComponent from "./ChatComponent";
 import "../css/LeftSidePanel.css";
 
@@ -9,7 +9,7 @@ const LeftSidePanel = () => {
   const [userName, setUserName] = useState("");
   const [conversations, setConversations] = useState([]);
   const [userId, setUserId] = useState(""); 
-  
+
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (storedUser && storedUser.firstName) {
@@ -50,7 +50,15 @@ const LeftSidePanel = () => {
     } else {
       setSelectedConversation(conversation);
     }
-    setShowFriendsPanel(false); 
+  };
+
+  const handleFriendClick = (friend) => {
+    setSelectedConversation({
+      friendId: friend.id,
+      firstName: friend.firstName,
+      lastName: friend.lastName,
+      // Add any other conversation details as needed
+    });
   };
 
   const formatTimestamp = (timestamp) => {
@@ -67,7 +75,7 @@ const LeftSidePanel = () => {
   const handleLogout = () => {
     // Clear the user data from localStorage and redirect to login page
     localStorage.removeItem("user");
-    window.location.href = "/login"; // Or route to your login page if using React Router
+    window.location.href = "/login"; 
   };
 
   return (
@@ -75,10 +83,10 @@ const LeftSidePanel = () => {
       <div className="welcome-message">
         Hello, {userName}!
         <button className="logout-btn" onClick={handleLogout}>
-          <i className="fa-solid fa-right-from-bracket"></i> {/* Font Awesome Logout Icon */}
+          <i className="fa-solid fa-right-from-bracket"></i> 
         </button>
         <br/>
-        <div className="user-id">(#{userId})</div>
+        <div className="user-id">(ID: #{userId})</div>
       </div>
 
       <button className="side-panel-btn" onClick={() => setShowFriendsPanel(!showFriendsPanel)}>
@@ -88,7 +96,7 @@ const LeftSidePanel = () => {
         <i className="fa-solid fa-users"></i> Groups
       </button>
 
-      <FriendsPanel isVisible={showFriendsPanel} closePanel={() => setShowFriendsPanel(false)} />
+      <FriendsPanel isVisible={showFriendsPanel} closePanel={() => setShowFriendsPanel(false)} onFriendClick={handleFriendClick} />
 
       <div className="conversations">
         <h2>Chats</h2>
