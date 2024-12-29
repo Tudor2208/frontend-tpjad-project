@@ -22,7 +22,6 @@ const GroupsPanel = ({ isVisible, closePanel, onGroupClick }) => {
       }
   
       try {
-        // Corectarea erorii de sintaxă
         const response = await fetch(`http://localhost:8081/api/v1/groups?userId=${userId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -32,7 +31,7 @@ const GroupsPanel = ({ isVisible, closePanel, onGroupClick }) => {
         if (response.ok) {
           const data = await response.json();
           const ownedGroups = data.filter((group) => group.ownerId === userId);
-          setOwnerGroups(ownedGroups); // Store groups where the user is the owner
+          setOwnerGroups(ownedGroups); 
         } else {
           console.error("Error fetching groups:", response.statusText);
         }
@@ -44,8 +43,6 @@ const GroupsPanel = ({ isVisible, closePanel, onGroupClick }) => {
     fetchGroups();
   }, []);
   
-
-  // Fetch pending invites and add owner name to each invite
   useEffect(() => {
     const fetchPendingInvites = async () => {
       const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -67,7 +64,6 @@ const GroupsPanel = ({ isVisible, closePanel, onGroupClick }) => {
         if (response.ok) {
           const data = await response.json();
 
-          // Pentru fiecare invitație, adaugă detaliile owner-ului grupului
           const invitesWithOwner = await Promise.all(
             data.map(async (invite) => {
               const ownerResponse = await fetch(`http://localhost:8080/api/v1/users/${invite.ownerId}`, {

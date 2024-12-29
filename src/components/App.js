@@ -1,5 +1,4 @@
 import { Toaster } from 'sonner';
-import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginPage from './LoginPage';
 import HomePage from './HomePage';

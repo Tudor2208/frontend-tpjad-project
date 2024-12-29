@@ -1,20 +1,18 @@
-/* Side Panel Container */
 .side-panel {
-  width: 280px; /* Set fixed width */
-  height: 100vh; /* Full viewport height */
-  background-color: #343a40; /* Dark background color */
-  color: #ffffff; /* White text */
+  width: 280px;
+  height: 100vh;
+  background-color: #343a40;
+  color: #ffffff;
   display: flex;
   flex-direction: column;
   border-right: 1px solid #495057;
-  margin: 0; /* Remove margin */
-  padding: 0; /* Remove padding */
-  position: fixed; /* Ensure the side panel stays fixed on the page */
+  margin: 0;
+  padding: 0;
+  position: fixed;
   top: 0;
   left: 0;
 }
 
-/* Buttons */
 .side-panel-btn {
   display: flex;
   align-items: center;
@@ -30,7 +28,7 @@
 }
 
 .side-panel-btn i {
-  margin-right: 10px; /* Icon spacing */
+  margin-right: 10px;
   font-size: 18px;
 }
 
@@ -39,18 +37,16 @@
   transform: scale(1.02);
 }
 
-/* Welcome message */
 .welcome-message {
   padding: 15px;
   font-size: 18px;
   font-weight: bold;
-  color: #ffffff; /* White text color */
-  background-color: #495057; /* Dark background for the welcome message */
+  color: #ffffff;
+  background-color: #495057;
   text-align: center;
-  border-bottom: 1px solid #6c757d; /* Optional border for separation */
+  border-bottom: 1px solid #6c757d;
 }
 
-/* Conversation List */
 .conversations {
   flex-grow: 1;
   overflow-y: auto;
@@ -59,11 +55,10 @@
   border-top: 1px solid #495057;
 }
 
-/* Individual Conversations */
 .conversation {
   display: flex;
-  flex-direction: column; /* Stack elements vertically */
-  justify-content: flex-start; /* Align elements to the top */
+  flex-direction: column;
+  justify-content: flex-start;
   padding: 10px;
   background-color: #495057;
   margin-bottom: 10px;
@@ -73,7 +68,7 @@
 }
 
 .conversation i {
-  margin-right: 10px; /* Icon spacing */
+  margin-right: 10px;
   font-size: 16px;
 }
 
@@ -82,39 +77,34 @@
   transform: scale(1.02);
 }
 
-/* Add selected conversation background color */
 .conversation.selected {
-  background-color: #212529; /* Darker background for selected conversation */
-  font-weight: bold; /* Optional: Make text bold for selected conversation */
+  background-color: #212529;
+  font-weight: bold;
 }
 
-/* Conversation Header: Name Styling */
 .conversation-header {
   font-size: 16px;
   font-weight: bold;
   color: #ffffff;
-  margin-bottom: 5px; /* Space between name and last message */
+  margin-bottom: 5px;
 }
 
-/* Last Message Styling */
 .conversation-last-message {
   font-size: 14px;
-  color: #b0b0b0; /* Lighter gray for the message */
+  color: #b0b0b0;
   margin-top: 5px;
 }
 
 .conversation-last-message small {
-  display: block; /* Ensure message text stays on its own line */
+  display: block;
 }
 
-/* Timestamp Styling */
 .conversation-timestamp {
   font-size: 12px;
-  color: #6c757d; /* Light gray color for timestamp */
+  color: #6c757d;
   margin-top: 5px;
 }
 
-/* Add Scrollbar Styling */
 .conversations::-webkit-scrollbar {
   width: 8px;
 }
@@ -129,22 +119,22 @@
 }
 
 .logout-btn {
-  background-color: transparent; /* Make the background transparent */
+  background-color: transparent;
   border: none;
-  color: #f44336; /* Red color for logout */
-  font-size: 20px; /* Increase font size to make the icon larger */
+  color: #f44336;
+  font-size: 20px;
   cursor: pointer;
   transition: color 0.3s;
 }
 
 .logout-btn:hover {
-  color: #d32f2f; /* Darker red when hovered */
+  color: #d32f2f;
 }
 
 .logout-btn:focus {
-  outline: none; /* Remove focus outline */
+  outline: none;
 }
 
 .user-id {
-  color:#12b64b
+  color: #12b64b;
 }

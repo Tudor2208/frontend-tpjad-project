@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { toast } from "sonner"; // Assuming you're using toast for notifications
-import '../css/Groups.css'; // Importă fișierul CSS
+import { toast } from "sonner"; 
+import '../css/Groups.css'; 
 import { useNavigate } from "react-router-dom";
 
 const Groups = () => {
@@ -8,8 +8,8 @@ const Groups = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isCreateGroupOpen, setIsCreateGroupOpen] = useState(false);
   const [newGroupName, setNewGroupName] = useState("");
-  const [members, setMembers] = useState({}); // Pentru a stoca membrii fiecărui grup
-  const [owners, setOwners] = useState({}); // Pentru a stoca ownerii grupurilor
+  const [members, setMembers] = useState({}); 
+  const [owners, setOwners] = useState({}); 
   const navigate = useNavigate();
 
   const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -34,10 +34,9 @@ const Groups = () => {
           const data = await response.json();
           setGroups(data);
 
-          // Fetch members for each group
           data.forEach(group => {
             fetchGroupMembers(group.membersIds, token, group.id);
-            fetchGroupOwner(group.ownerId, token, group.id); // Fetch owner info
+            fetchGroupOwner(group.ownerId, token, group.id);
           });
         } else {
           console.error("Error fetching groups:", response.statusText);
@@ -72,7 +71,6 @@ const Groups = () => {
     }
   };
 
-  // Fetch group owner by ownerId
   const fetchGroupOwner = async (ownerId, token, groupId) => {
     try {
       const response = await fetch(`http://localhost:8080/api/v1/users/${ownerId}`, {
@@ -217,7 +215,7 @@ const Groups = () => {
           .map(group => (
             <div key={group.id} className="group-item" onClick={() => handleGroupClick(group.id)}>
               <h3>{group.name}</h3>
-              <p>Owner: {group.ownerId === userId ? "YOU" : owners[group.id] || "Loading..."}</p> {/* Display owner as YOU */}
+              <p>Owner: {group.ownerId === userId ? "YOU" : owners[group.id] || "Loading..."}</p> 
               <p>Members ({members[group.id]?.length || 0}): {members[group.id]?.join(", ") || "Loading..."}</p>
               <div>
                 {group.ownerId === userId ? (

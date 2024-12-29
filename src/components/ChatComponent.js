@@ -1,83 +1,67 @@
 import React, { useState, useEffect, useRef } from "react";
-import 'font-awesome/css/font-awesome.min.css';
+import "font-awesome/css/font-awesome.min.css";
 import "../css/ChatComponent.css";
 
-const ChatComponent = ({ conversation, closeChat, userId1, userId2 }) => {
+const ChatComponent = ({ conversation, closeChat, userId1 }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [editingMessageId, setEditingMessageId] = useState(null);
-  const [editingText, setEditingText] = useState(""); // Initialize as empty string to avoid undefined issues
-  const [isFriend, setIsFriend] = useState(false); // Track if the user is friends with the other person
+  const [editingText, setEditingText] = useState("");
   const chatBoxRef = useRef(null);
 
-  // Fetch messages from the API
   useEffect(() => {
     const fetchMessages = async () => {
       const storedUser = JSON.parse(localStorage.getItem("user"));
       const token = storedUser?.token;
-      const loggedInUserId = storedUser?.id;
 
-      if (!token || !loggedInUserId) {
-        console.error("Token or User ID not found.");
+      if (!token) {
+        console.error("Token not found.");
         return;
       }
 
       try {
-        const response = await fetch(
-          `http://localhost:8081/api/v1/messages/conversation?userId1=${userId1}&userId2=${userId2}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const endpoint = conversation.privateConversation
+          ? `http://localhost:8081/api/v1/messages/conversation?userId1=${userId1}&userId2=${conversation.friendId}`
+          : `http://localhost:8081/api/v1/group-messages/${conversation.groupId}`;
+
+        const response = await fetch(endpoint, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const data = await response.json();
-        if (Array.isArray(data)) {
-          setMessages(data);
+
+        if (!conversation.privateConversation) {
+          const messagesWithSenderNames = await Promise.all(
+            data.map(async (msg) => {
+              const userResponse = await fetch(
+                `http://localhost:8080/api/v1/users/${msg.senderId}`,
+                {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              );
+              const userData = await userResponse.json();
+              return {
+                ...msg,
+                senderFirstName: userData.firstName,
+                senderLastName: userData.lastName,
+              };
+            })
+          );
+          setMessages(messagesWithSenderNames);
         } else {
-          console.error("API response is not an array:", data);
-          setMessages([]);
+          setMessages(data);
         }
       } catch (error) {
         console.error("Error fetching messages:", error);
-        setMessages([]);
-      }
-    };
-
-    const checkFriendStatus = async () => {
-      const storedUser = JSON.parse(localStorage.getItem("user"));
-      const token = storedUser?.token;
-      const loggedInUserId = storedUser?.id;
-
-      if (!token || !loggedInUserId) {
-        console.error("Token or User ID not found.");
-        return;
-      }
-
-      try {
-        // Fetch the friends list for the logged-in user to check if they are friends
-        const response = await fetch(
-          `http://localhost:8080/api/v1/friendships?userId=${loggedInUserId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const friendsData = await response.json();
-        // Check if the other user is in the friends list
-        const isFriend = friendsData.some(friend => friend.id === userId1 || friend.id === userId2);
-        setIsFriend(isFriend); // Update the state based on whether they are friends
-      } catch (error) {
-        console.error("Error checking friendship status:", error);
       }
     };
 
     fetchMessages();
-    checkFriendStatus();
-  }, [userId1, userId2]);
+  }, [conversation, userId1]);
 
-  // Scroll to the bottom when new messages arrive
   useEffect(() => {
     if (chatBoxRef.current) {
       chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
@@ -91,35 +75,49 @@ const ChatComponent = ({ conversation, closeChat, userId1, userId2 }) => {
   const sendMessage = async () => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     const loggedInUserId = storedUser?.id;
+
     if (newMessage.trim()) {
       const timestamp = Date.now();
-      const recipientId = userId1 === loggedInUserId ? userId2 : userId1;
 
-      // Initially set 'edited' to false when sending a new message
       setMessages([
         ...messages,
-        { senderId: loggedInUserId, text: newMessage, timestamp: timestamp, edited: false },
+        {
+          senderId: loggedInUserId,
+          text: newMessage,
+          timestamp: timestamp,
+          edited: false,
+        },
       ]);
-      setNewMessage(""); // Reset the input field
+      setNewMessage("");
 
       try {
-        const response = await fetch("http://localhost:8081/api/v1/messages", {
+        const endpoint = conversation.privateConversation
+          ? "http://localhost:8081/api/v1/messages"
+          : `http://localhost:8081/api/v1/group-messages`;
+
+        const body = conversation.privateConversation
+          ? {
+              text: newMessage,
+              senderId: loggedInUserId,
+              recipientId: conversation.friendId,
+            }
+          : {
+              text: newMessage,
+              senderId: loggedInUserId,
+              groupId: conversation.groupId,
+            };
+
+        const response = await fetch(endpoint, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${storedUser?.token}`,
           },
-          body: JSON.stringify({
-            text: newMessage,
-            senderId: loggedInUserId,
-            recipientId: recipientId,
-          }),
+          body: JSON.stringify(body),
         });
 
-        if (response.ok) {
-          console.log("Message saved successfully");
-        } else {
-          console.error("Error saving message:", response.statusText);
+        if (!response.ok) {
+          console.error("Error sending message:", response.statusText);
         }
       } catch (error) {
         console.error("Error sending message:", error);
@@ -133,36 +131,17 @@ const ChatComponent = ({ conversation, closeChat, userId1, userId2 }) => {
     }
   };
 
-  const handleDeleteMessage = async (messageId) => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    const token = storedUser?.token;
-
-    try {
-      const response = await fetch(`http://localhost:8081/api/v1/messages/${messageId}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (response.ok) {
-        setMessages(messages.filter((msg) => msg.id !== messageId)); // Remove the deleted message from the UI
-        console.log("Message deleted successfully");
-      } else {
-        console.error("Error deleting message:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Error deleting message:", error);
-    }
-  };
-
   const handleEditMessage = async (messageId) => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     const token = storedUser?.token;
 
     if (editingText.trim()) {
       try {
-        const response = await fetch(`http://localhost:8081/api/v1/messages/${messageId}`, {
+        const endpoint = conversation.privateConversation
+          ? `http://localhost:8081/api/v1/messages/${messageId}`
+          : `http://localhost:8081/api/v1/group-messages/${messageId}`;
+
+        const response = await fetch(endpoint, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -172,13 +151,13 @@ const ChatComponent = ({ conversation, closeChat, userId1, userId2 }) => {
         });
 
         if (response.ok) {
-          // Update the message in state with the new text and mark as edited
-          setMessages(messages.map((msg) =>
-            msg.id === messageId ? { ...msg, text: editingText, edited: true } : msg
-          ));
+          setMessages(
+            messages.map((msg) =>
+              msg.id === messageId ? { ...msg, text: editingText, edited: true } : msg
+            )
+          );
           setEditingMessageId(null);
-          setEditingText(""); // Reset editing text after successful edit
-          console.log("Message edited successfully");
+          setEditingText("");
         } else {
           console.error("Error editing message:", response.statusText);
         }
@@ -188,15 +167,35 @@ const ChatComponent = ({ conversation, closeChat, userId1, userId2 }) => {
     }
   };
 
+  const handleDeleteMessage = async (messageId) => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    const token = storedUser?.token;
+
+    try {
+      const endpoint = conversation.privateConversation
+        ? `http://localhost:8081/api/v1/messages/${messageId}`
+        : `http://localhost:8081/api/v1/group-messages/${messageId}`;
+
+      const response = await fetch(endpoint, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        setMessages(messages.filter((msg) => msg.id !== messageId));
+      } else {
+        console.error("Error deleting message:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error deleting message:", error);
+    }
+  };
+
   const formatTimestamp = (timestamp) => {
     const date = new Date(timestamp);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-    const hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
-
-    return `${day}-${month}-${year}, ${hours}:${minutes}`;
+    return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
   };
 
   return (
@@ -204,15 +203,24 @@ const ChatComponent = ({ conversation, closeChat, userId1, userId2 }) => {
       <button className="close-btn" onClick={closeChat}>
         &times;
       </button>
-      <h3>Chat with {conversation.firstName} {conversation.lastName}</h3>
+      <h3>
+        Chat with{" "}
+        {conversation.privateConversation
+          ? `${conversation.firstName} ${conversation.lastName}`
+          : `Group: ${conversation.groupName}`}
+      </h3>
       <div className="chat-box" ref={chatBoxRef}>
         {messages.length === 0 ? (
           <div className="no-messages">Start the conversation...</div>
         ) : (
-          messages.map((msg, index) => (
+          messages.map((msg) => (
             <div
-              key={index}
-              className={`message ${msg.senderId === JSON.parse(localStorage.getItem("user"))?.id ? "sent" : "received"}`}
+              key={msg.id}
+              className={`message ${
+                msg.senderId === JSON.parse(localStorage.getItem("user"))?.id
+                  ? "sent"
+                  : "received"
+              }`}
             >
               <div className="message-text">
                 {editingMessageId === msg.id ? (
@@ -220,16 +228,23 @@ const ChatComponent = ({ conversation, closeChat, userId1, userId2 }) => {
                     type="text"
                     value={editingText}
                     onChange={(e) => setEditingText(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        handleEditMessage(msg.id);
-                      }
-                    }}
+                    onKeyDown={(e) =>
+                      e.key === "Enter" && handleEditMessage(msg.id)
+                    }
                     autoFocus
                   />
                 ) : (
                   <>
-                    {msg.text}
+                    {conversation.privateConversation ? (
+                      msg.text
+                    ) : (
+                      <>
+                        {msg.senderId !== JSON.parse(localStorage.getItem("user"))?.id && (
+                          <strong id="sender-name">{msg.senderFirstName} {msg.senderLastName}: </strong>
+                        )}
+                        {msg.text}
+                      </>
+                    )}
                     {msg.edited && <span className="edited-text"> (Edited)</span>}
                   </>
                 )}
@@ -237,11 +252,16 @@ const ChatComponent = ({ conversation, closeChat, userId1, userId2 }) => {
               <div className="message-time">{formatTimestamp(msg.timestamp)}</div>
               {msg.senderId === JSON.parse(localStorage.getItem("user"))?.id && (
                 <div className="message-actions">
-                  <button onClick={() => { setEditingMessageId(msg.id); setEditingText(msg.text || ""); }}>
-                    <i className="fa fa-edit"></i>
+                  <button
+                    onClick={() => {
+                      setEditingMessageId(msg.id);
+                      setEditingText(msg.text);
+                    }}
+                  >
+                    <i id="chat-edit" className="fa fa-edit"></i>
                   </button>
                   <button onClick={() => handleDeleteMessage(msg.id)}>
-                    <i className="fa-solid fa-trash"></i>
+                    <i id="chat-delete" className="fa fa-trash"></i>
                   </button>
                 </div>
               )}
@@ -249,23 +269,18 @@ const ChatComponent = ({ conversation, closeChat, userId1, userId2 }) => {
           ))
         )}
       </div>
-
-      {isFriend ? (
-        <div className="message-input">
-          <input
-            type="text"
-            value={newMessage}
-            onChange={handleMessageChange}
-            onKeyDown={handleKeyPress}
-            placeholder="Type a message"
-          />
-          <button onClick={sendMessage}>
-            <i className="fa fa-paper-plane"></i>
-          </button>
-        </div>
-      ) : (
-        <div className="no-messages">You are not friends with this person, so you can't send messages.</div>
-      )}
+      <div className="message-input">
+        <input
+          type="text"
+          value={newMessage}
+          onChange={handleMessageChange}
+          onKeyDown={handleKeyPress}
+          placeholder="Type a message"
+        />
+        <button onClick={sendMessage}>
+          <i className="fa fa-paper-plane"></i>
+        </button>
+      </div>
     </div>
   );
 };

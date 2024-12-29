@@ -8,10 +8,10 @@ const GroupMembers = () => {
   const navigate = useNavigate();
   const [group, setGroup] = useState(null);
   const [members, setMembers] = useState([]);
-  const [owner, setOwner] = useState("");  // This will store the owner's full name
-  const [isMembersLoading, setIsMembersLoading] = useState(true); // Track loading state for members
-  const [isEditing, setIsEditing] = useState(false); // State to toggle edit mode
-  const [newGroupName, setNewGroupName] = useState(""); // State for new group name
+  const [owner, setOwner] = useState("");  
+  const [isMembersLoading, setIsMembersLoading] = useState(true); 
+  const [isEditing, setIsEditing] = useState(false); 
+  const [newGroupName, setNewGroupName] = useState(""); 
   const storedUser = JSON.parse(localStorage.getItem('user'));
   const userId = storedUser?.id;
   const token = storedUser?.token;
@@ -34,7 +34,6 @@ const GroupMembers = () => {
         if (response.ok) {
           const data = await response.json();
           setGroup(data);
-          // Fetch the owner's details
           fetchOwnerDetails(data.ownerId, token);
           fetchGroupMembers(data.membersIds, token);
         } else {
@@ -49,7 +48,6 @@ const GroupMembers = () => {
     fetchGroupDetails();
   }, [groupId, userId, token, navigate]);
 
-  // Fetch details of the owner using their ID
   const fetchOwnerDetails = async (ownerId, token) => {
     try {
       const response = await fetch(`http://localhost:8080/api/v1/users/${ownerId}`, {
@@ -60,7 +58,7 @@ const GroupMembers = () => {
 
       if (response.ok) {
         const ownerData = await response.json();
-        setOwner(`${ownerData.firstName} ${ownerData.lastName}`);  // Store owner's full name
+        setOwner(`${ownerData.firstName} ${ownerData.lastName}`);
       } else {
         toast.error('Failed to fetch owner details');
       }
@@ -72,7 +70,7 @@ const GroupMembers = () => {
 
   const fetchGroupMembers = async (memberIds, token) => {
     if (memberIds.length === 0) {
-      setIsMembersLoading(false); // If no members, stop the loading state
+      setIsMembersLoading(false);
       return;
     }
 
@@ -87,11 +85,11 @@ const GroupMembers = () => {
 
       const membersData = await Promise.all(memberPromises);
       setMembers(membersData);
-      setIsMembersLoading(false); // Stop loading after fetching members
+      setIsMembersLoading(false); 
     } catch (error) {
       console.error('Error fetching group members:', error);
       toast.error('Error fetching group members');
-      setIsMembersLoading(false); // Stop loading even on error
+      setIsMembersLoading(false); 
     }
   };
 

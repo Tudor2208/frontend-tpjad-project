@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from "react";
 import "../css/FriendsPanel.css";
-import { toast } from "sonner"; // Assuming you're using toast for notifications
+import { toast } from "sonner";
 
 const FriendsPanel = ({ isVisible, closePanel, onFriendClick }) => {
   const [friends, setFriends] = useState([]);
-  const [pendingRequests, setPendingRequests] = useState([]); // New state for pending requests
+  const [pendingRequests, setPendingRequests] = useState([]);
   const [inputUserId, setInputUserId] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Fetch friends from API
   useEffect(() => {
     const fetchFriends = async () => {
       const storedUser = JSON.parse(localStorage.getItem("user"));
-      const userId = storedUser?.id; // Assuming the userId is stored in localStorage
+      const userId = storedUser?.id;
       const token = storedUser?.token;
 
       if (!userId || !token) {
@@ -29,7 +28,7 @@ const FriendsPanel = ({ isVisible, closePanel, onFriendClick }) => {
 
         if (response.ok) {
           const data = await response.json();
-          setFriends(data); // Assuming the API returns an array of friends
+          setFriends(data);
         } else {
           console.error("Error fetching friends:", response.statusText);
         }
@@ -41,11 +40,10 @@ const FriendsPanel = ({ isVisible, closePanel, onFriendClick }) => {
     fetchFriends();
   }, []);
 
-  // Fetch pending friend requests for the user
   useEffect(() => {
     const fetchPendingRequests = async () => {
       const storedUser = JSON.parse(localStorage.getItem("user"));
-      const userId = storedUser?.id; // Assuming the userId is stored in localStorage
+      const userId = storedUser?.id;
       const token = storedUser?.token;
 
       if (!userId || !token) {
@@ -62,7 +60,7 @@ const FriendsPanel = ({ isVisible, closePanel, onFriendClick }) => {
 
         if (response.ok) {
           const data = await response.json();
-          setPendingRequests(data); // Set the pending friend requests
+          setPendingRequests(data);
         } else {
           console.error("Error fetching pending requests:", response.statusText);
         }
@@ -87,7 +85,7 @@ const FriendsPanel = ({ isVisible, closePanel, onFriendClick }) => {
       toast.warning("Please enter a valid number for the ID");
     } else {
       const storedUser = JSON.parse(localStorage.getItem("user"));
-      const userId = storedUser?.id; // Get current user's ID
+      const userId = storedUser?.id;
       const token = storedUser?.token;
 
       if (!userId || !token) {
@@ -95,14 +93,12 @@ const FriendsPanel = ({ isVisible, closePanel, onFriendClick }) => {
         return;
       }
 
-      // Check if the user is trying to send a friend request to themselves
       if (parseInt(inputUserId) === userId) {
         toast.warning("You can't send a friend request to yourself.");
         return;
       }
 
       try {
-        // Send the friend request
         const response = await fetch(`http://localhost:8080/api/v1/friendships/${userId}/${inputUserId}`, {
           method: 'POST',
           headers: {
@@ -112,7 +108,6 @@ const FriendsPanel = ({ isVisible, closePanel, onFriendClick }) => {
         });
 
         if (response.ok) {
-          // Fetch the user's details to get their name
           const userResponse = await fetch(`http://localhost:8080/api/v1/users/${inputUserId}`, {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -121,13 +116,12 @@ const FriendsPanel = ({ isVisible, closePanel, onFriendClick }) => {
 
           if (userResponse.ok) {
             const user = await userResponse.json();
-            // Show success toast with the user's full name
             toast.success(`${user.firstName} ${user.lastName} has received your friend request`);
           } else {
             toast.error("Failed to fetch user details.");
           }
 
-          setInputUserId(""); // Clear the input field after success
+          setInputUserId("");
         } else {
           const errorData = await response.json();
           toast.error(errorData.message || "Failed to send friend request.");
@@ -191,7 +185,7 @@ const FriendsPanel = ({ isVisible, closePanel, onFriendClick }) => {
 
       if (response.ok) {
         toast.success("Friend request denied!");
-        setPendingRequests(pendingRequests.filter((request) => request.id !== friendId)); // Remove from pending
+        setPendingRequests(pendingRequests.filter((request) => request.id !== friendId)); 
       } else {
         toast.error("Failed to deny friend request.");
       }
@@ -201,8 +195,6 @@ const FriendsPanel = ({ isVisible, closePanel, onFriendClick }) => {
     }
   };
 
-  // Remove Friend (delete friendship)
-  // Remove Friend (delete friendship)
 const removeFriend = async (friendId) => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
   const userId = storedUser?.id;
@@ -213,10 +205,9 @@ const removeFriend = async (friendId) => {
     return;
   }
 
-  // Confirm before removing the friend
   const confirmation = window.confirm("Are you sure you want to remove this friend?");
   if (!confirmation) {
-    return; // If the user cancels, we stop the operation
+    return;
   }
 
   try {
@@ -229,7 +220,7 @@ const removeFriend = async (friendId) => {
 
     if (response.ok) {
       toast.success("Friend removed!");
-      setFriends(friends.filter((friend) => friend.id !== friendId)); // Remove from friends list
+      setFriends(friends.filter((friend) => friend.id !== friendId));
     } else {
       toast.error("Failed to remove friend.");
     }
@@ -257,7 +248,6 @@ const removeFriend = async (friendId) => {
         </div>
       </div>
 
-      {/* Pending Friend Requests Section */}
       <h2>Pending Friend Requests</h2>
       <div className="pending-requests-list">
         {pendingRequests.length > 0 ? (
@@ -298,7 +288,7 @@ const removeFriend = async (friendId) => {
             <div
               key={index}
               className="friend-item"
-              onClick={() => onFriendClick(friend)} // Pass selected friend to parent
+              onClick={() => onFriendClick(friend)}
             >
               {friend.firstName} {friend.lastName} (#{friend.id})
               <button className="remove-btn" onClick={() => removeFriend(friend.id)}>

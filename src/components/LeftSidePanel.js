@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import FriendsPanel from "./FriendsPanel";
-import GroupsPanel from "./GroupsPanel"; // Import GroupsPanel
+import GroupsPanel from "./GroupsPanel"; 
 import ChatComponent from "./ChatComponent";
 import "../css/LeftSidePanel.css";
 
 const LeftSidePanel = () => {
   const [showFriendsPanel, setShowFriendsPanel] = useState(false);
-  const [showGroupsPanel, setShowGroupsPanel] = useState(false); // State for Groups Panel
+  const [showGroupsPanel, setShowGroupsPanel] = useState(false);
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [userName, setUserName] = useState("");
   const [conversations, setConversations] = useState([]);
@@ -59,6 +59,7 @@ const LeftSidePanel = () => {
       friendId: friend.id,
       firstName: friend.firstName,
       lastName: friend.lastName,
+      privateConversation: true
     });
   };
 
@@ -97,19 +98,17 @@ const LeftSidePanel = () => {
       </button>
       <button
         className="side-panel-btn"
-        onClick={() => setShowGroupsPanel(!showGroupsPanel)} // Toggle Groups Panel
+        onClick={() => setShowGroupsPanel(!showGroupsPanel)} 
       >
         <i className="fa-solid fa-users"></i> Groups
       </button>
 
-      {/* Friends Panel */}
       <FriendsPanel
         isVisible={showFriendsPanel}
         closePanel={() => setShowFriendsPanel(false)}
         onFriendClick={handleFriendClick}
       />
 
-      {/* Groups Panel */}
       <GroupsPanel
         isVisible={showGroupsPanel}
         closePanel={() => setShowGroupsPanel(false)}
@@ -127,7 +126,9 @@ const LeftSidePanel = () => {
           >
             <div className="conversation-header">
               <span className="conversation-name">
-                {conversation.firstName} {conversation.lastName}
+                {conversation.privateConversation
+                  ? `${conversation.firstName} ${conversation.lastName}`
+                  : conversation.groupName}
               </span>
             </div>
             <div className="conversation-last-message">
@@ -137,7 +138,9 @@ const LeftSidePanel = () => {
               </small>
             </div>
             <div className="conversation-timestamp">
-              <small>{formatTimestamp(conversation.lastMessageTimestamp)}</small>
+              <small>
+                {formatTimestamp(conversation.lastMessageTimestamp)}
+              </small>
             </div>
           </div>
         ))}
@@ -148,7 +151,11 @@ const LeftSidePanel = () => {
           conversation={selectedConversation}
           closeChat={() => setSelectedConversation(null)}
           userId1={userId}
-          userId2={selectedConversation.friendId}
+          userId2={
+            selectedConversation.privateConversation
+              ? selectedConversation.friendId
+              : null 
+          }
         />
       )}
     </div>

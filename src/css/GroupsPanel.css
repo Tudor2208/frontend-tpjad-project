@@ -148,7 +148,6 @@
     border-top: 1px solid #34495e;
   }
   
-  /* Individual group item */
   .group-item {
     display: flex;
     align-items: center;
@@ -162,13 +161,11 @@
     justify-content: space-between;
   }
   
-  /* Hover effect for group item */
   .group-item:hover {
     background-color: #1c2833;
     transform: scale(1.02);
   }
   
-  /* Style for "No groups found" message */
   .no-groups {
     color: #e74c3c;
     font-size: 16px;
@@ -177,7 +174,6 @@
     margin-top: 20px;
   }
   
-  /* Scrollbar Styling */
   .groups-list::-webkit-scrollbar {
     width: 8px;
   }
@@ -191,7 +187,6 @@
     background: #2c3e50;
   }
   
-  /* Join and Leave buttons for Groups */
   .join-btn,
   .leave-btn {
     background-color: transparent;
@@ -218,7 +213,6 @@
     opacity: 0.8;
   }
   
-  /* Pending Group Invites */
   .pending-invites-list {
     margin-bottom: 20px;
   }
@@ -261,7 +255,6 @@
     opacity: 0.8;
   }
   
-  /* Style for "No pending invites" message */
   .no-pending-invites {
     color: #e67e22;
     font-size: 14px;
@@ -270,7 +263,7 @@
   }
   
   .delete-btn {
-    background-color: #e74c3c; /* Roșu pentru delete */
+    background-color: #e74c3c;
     border: none;
     color: white;
     padding: 8px 16px;
@@ -280,6 +273,6 @@
   }
   
   .delete-btn:hover {
-    background-color: #c0392b; /* Roșu mai închis pe hover */
+    background-color: #c0392b;
   }
   
