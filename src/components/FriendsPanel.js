@@ -139,7 +139,6 @@ const FriendsPanel = ({ isVisible, closePanel, onFriendClick }) => {
     }
   };
 
-  // Accept Friend Request
   const acceptFriendRequest = async (friendId) => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     const userId = storedUser?.id;
@@ -161,7 +160,8 @@ const FriendsPanel = ({ isVisible, closePanel, onFriendClick }) => {
 
       if (response.ok) {
         toast.success("Friend request accepted!");
-        setPendingRequests(pendingRequests.filter((request) => request.id !== friendId)); // Remove from pending
+        setPendingRequests(pendingRequests.filter((request) => request.id !== friendId));
+        window.location.reload(); 
       } else {
         toast.error("Failed to accept friend request.");
       }
@@ -171,7 +171,6 @@ const FriendsPanel = ({ isVisible, closePanel, onFriendClick }) => {
     }
   };
 
-  // Deny Friend Request
   const denyFriendRequest = async (friendId) => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     const userId = storedUser?.id;
@@ -256,14 +255,6 @@ const removeFriend = async (friendId) => {
           />
           <button onClick={addFriend}>Add Friend</button>
         </div>
-        <div className="search-friend">
-          <input
-            type="text"
-            placeholder="Search friends..."
-            value={searchQuery}
-            onChange={handleSearchChange}
-          />
-        </div>
       </div>
 
       {/* Pending Friend Requests Section */}
@@ -293,6 +284,14 @@ const removeFriend = async (friendId) => {
       </div>
 
       <h2>Your Friends</h2>
+      <div className="search-friend">
+          <input
+            type="text"
+            placeholder="Search friends..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
+        </div>
       <div className="friends-list">
         {filteredFriends.length > 0 ? (
           filteredFriends.map((friend, index) => (

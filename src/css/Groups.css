@@ -1,0 +1,226 @@
+/* General container styling */
+.groups-container {
+    padding: 30px;
+    background-color: #2c3e50;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    margin: 30px auto;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Title styles */
+h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #acb7c1;
+    margin-bottom: 20px;
+}
+
+/* Search bar styles */
+.search-group {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-group input {
+    padding: 12px 18px;
+    width: 70%;
+    font-size: 1rem;
+    border: 2px solid #ced6e0;
+    border-radius: 30px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.search-group input:focus {
+    border-color: #2980b9;
+    box-shadow: 0 0 5px rgba(41, 128, 185, 0.6);
+}
+
+/* Groups list container */
+.groups-list {
+    margin-top: 40px;
+}
+
+/* Group item styling */
+.group-item {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(67, 65, 149, 0.5);
+    display: flex;
+    flex-direction: column; /* Align elements vertically */
+    transition: all 0.3s ease;
+}
+
+.group-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(65, 69, 170, 0.7);
+    background-color: #ecf0f1;
+}
+
+.group-item h3 {
+    margin: 0 0 10px 0; /* Space below the title */
+    font-size: 1.5rem;
+    color: #88accb;
+    font-weight: 600;
+}
+
+/* Members styling */
+.group-item .members {
+    margin: 0 0 10px 10px; /* Slight left indentation */
+    font-size: 1rem;
+    color: #555;
+    font-style: normal;
+}
+
+.group-item .members span {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Buttons styling */
+.group-item button {
+    padding: 10px 16px;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    margin-right: 10px;
+}
+
+.group-item .delete-btn {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.group-item .leave-btn {
+    background-color: #3498db;
+    color: white;
+}
+
+.group-item button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.group-item button:focus {
+    outline: none;
+}
+
+/* Placeholder for no groups found */
+.groups-list p {
+    font-size: 1.2rem;
+    color: #95a5a6;
+    text-align: center;
+}
+
+/* Create group button */
+.create-group-btn {
+    padding: 10px 15px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.create-group-btn:hover {
+    background-color: #2980b9;
+}
+
+/* Create group form styling */
+.create-group-form {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.create-group-form input {
+    padding: 12px 18px;
+    font-size: 1rem;
+    border: 2px solid #ced6e0;
+    border-radius: 30px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.create-group-form input:focus {
+    border-color: #2980b9;
+    box-shadow: 0 0 5px rgba(41, 128, 185, 0.6);
+}
+
+.create-group-form button {
+    padding: 12px 18px;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+}
+
+/* Create button */
+.create-group-form button:first-of-type {
+    background-color: #3498db;
+    color: white;
+}
+
+.create-group-form button:first-of-type:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+/* Cancel button */
+.create-group-form button:last-of-type {
+    background-color: #e74c3c;
+    color: white;
+    border: 2px solid #e74c3c;
+}
+
+.create-group-form button:last-of-type:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .groups-container {
+        padding: 20px;
+    }
+
+    .search-group input {
+        width: 100%;
+    }
+
+    .groups-list {
+        margin-top: 20px;
+    }
+
+    .group-item {
+        padding: 15px;
+    }
+
+    .create-group-form input {
+        width: 100%;
+    }
+
+    .create-group-form button {
+        width: 100%;
+        padding: 10px;
+    }
+}

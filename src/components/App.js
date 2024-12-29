@@ -5,7 +5,9 @@ import LoginPage from './LoginPage';
 import HomePage from './HomePage';
 import ProtectedRoute from './ProtectedRoute';
 import UnauthorizedPage from './UnauthorizedPage';
+import Groups from './Groups';
 import SignUpForm from './SignUpForm';
+import GroupMembers from './GroupMembers';
 
 function App() {
   return (
@@ -23,7 +25,14 @@ function App() {
             path="/"
             element={<ProtectedRoute component={HomePage} />}
           />
-        
+         <Route
+            path="/groups"
+            element={<ProtectedRoute component={Groups} />}
+          />
+           <Route
+            path="/group/:groupId"
+            element={<ProtectedRoute component={GroupMembers} />}
+          />
         </Routes>
       </Router>
     </>

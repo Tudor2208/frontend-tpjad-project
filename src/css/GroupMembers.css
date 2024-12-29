@@ -1,0 +1,47 @@
+.group-detail-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+  }
+  
+  .members-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .member-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  button {
+    padding: 5px 15px;
+    background-color: #ff4c4c;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  button:hover {
+    background-color: #e63946;
+  }
+  
+  .fa-edit {
+    font-size: 1.5rem;  /* Mărimea icon-ului */
+    cursor: pointer;    /* Arată un cursor de tip pointer la hover */
+    color: #007bff;      /* Culoare albastră pentru icon */
+    transition: color 0.3s ease;  /* Tranziție lină a culorii */
+  }
+  
+  .fa-edit:hover {
+    color: #0056b3;      /* Culoare mai închisă la hover */
+  }
